@@ -29,7 +29,13 @@ fn load_subfolders(folder: &ITaskFolder) -> Vec<ITaskFolder> {
         let mut resp: Vec<ITaskFolder> = vec![];
         for _i in 1..(num_sub_folders + 1) {
             let var: VARIANT = std::mem::zeroed();
-            let sub_folder: ITaskFolder = sub_folders.get_Item(&var).unwrap();
+            let sub_folder = sub_folders.get_Item(&var);
+            if sub_folder.is_err() {
+                log::error!("Error {:?}", sub_folder.err());
+                continue;
+            }
+            let sub_folder = sub_folder.unwrap();
+
             let _sub_folders = load_subfolders(&sub_folder);
             resp.push(sub_folder);
             resp.extend(_sub_folders);
@@ -46,7 +52,12 @@ fn load_subfolder_tasks(folder: &ITaskFolder) -> Vec<WinTask> {
 
         for _i in 1..(task_count + 1) {
             let var: VARIANT = std::mem::zeroed();
-            let task: IRegisteredTask = tasks.get_Item(&var).unwrap();
+            let task = tasks.get_Item(&var);
+            if task.is_err() {
+                log::error!("Error {:?}", task.err());
+                continue;
+            }
+            let task = task.unwrap();
             let _task = Task::from(task);
             resp.push(WinTask {
                 folder_name: folder.Name().unwrap().to_string(),
