@@ -25,7 +25,7 @@ pub fn run() -> Vec<Process> {
                 // log::info!("Checking module: {:?} for dll {:?}, resp {}", module.file_name, x, r);
                 r
             }) {
-                log::info!("Found not known module {:?} in {:?}", module, process.name,);
+                // log::info!("Found not known module {:?} in {:?}", module, process.name,);
 
                 let base_path = std::path::Path::new(&process.executable_path)
                     .parent()
@@ -41,11 +41,11 @@ pub fn run() -> Vec<Process> {
                 let check_str = format!("{}\\{}", base_path, module_name);
                 let check_path = std::path::Path::new(&check_str);
 
-                log::info!("Checking path: {:?}", check_path);
+                // log::info!("Checking path: {:?}", check_path);
                 if !check_path.exists() {
                     log::info!(
                         "Found hijackable module {:?} in {:?}, process exe path: {:?}",
-                        module,
+                        module.file_name,
                         process.name,
                         process.executable_path
                     );
