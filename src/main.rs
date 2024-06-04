@@ -11,6 +11,7 @@ mod privesc_bin;
 mod recon;
 mod recon_bin;
 mod winapi;
+mod server;
 
 use clap::{Arg, ArgAction, Command};
 
@@ -25,6 +26,9 @@ async fn main() {
         .subcommand(Command::new("privesc").about("run privesc"))
         .subcommand(Command::new("recon").about("run recon"))
         .subcommand(Command::new("create_user").about("create new default user"))
+        .subcommand(Command::new("server").about("run server"))
+        .subcommand(Command::new("udp").about("run udp"))
+        .subcommand(Command::new("tcp").about("run tcp"))
         .get_matches();
 
     match matches.subcommand() {
@@ -39,6 +43,18 @@ async fn main() {
         Some(("create_user", _)) => {
             info!("running create_user...");
             winapi::users::create_user().await;
+        }
+        Some(("server", _)) => {
+            info!("running server...");
+            server::run_server().await;
+        }
+        Some(("udp", _)) => {
+            info!("running udp...");
+            server::run_udp_client().await;
+        }
+        Some(("tcp", _)) => {
+            info!("running tcp...");
+            server::run_tcp_client().await;
         }
         _ => {
             info!("defaulting to cli...");
