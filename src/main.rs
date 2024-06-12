@@ -5,13 +5,17 @@
 #[macro_use]
 extern crate log;
 
-mod utils;
+mod clients;
+mod constants;
 mod privesc;
 mod privesc_bin;
 mod recon;
 mod recon_bin;
-mod winapi;
+mod schemas;
 mod server;
+mod servers;
+mod utils;
+mod winapi;
 
 use clap::{Arg, ArgAction, Command};
 
@@ -50,15 +54,14 @@ async fn main() {
         }
         Some(("udp", _)) => {
             info!("running udp...");
-            server::run_udp_client().await;
+            clients::udp::client().await;
         }
         Some(("tcp", _)) => {
             info!("running tcp...");
-            server::run_tcp_client().await;
+            clients::tcp::client().await;
         }
         _ => {
             info!("defaulting to cli...");
         }
     }
 }
-

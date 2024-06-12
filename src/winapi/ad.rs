@@ -2,7 +2,6 @@ use crate::winapi::wmi::init_com;
 use core::ffi::c_void;
 use std::collections::HashMap;
 use widestring::{u16cstr, Utf16String};
-use windows_core::Interface;
 use windows::core::{IUnknown, BSTR, HRESULT, PCSTR, PCWSTR, PWSTR};
 use windows::Win32::Networking::ActiveDirectory::{
     ADsGetObject, ADsOpenObject, IADs, IADsOpenDSObject, IDirectorySearch, ADSTYPE_BACKLINK,
@@ -20,7 +19,8 @@ use windows::Win32::Networking::ActiveDirectory::{
 use windows::Win32::System::Com::{
     CoCreateInstance, CoInitialize, IDispatch, CLSCTX_ALL, CLSCTX_INPROC_SERVER,
 };
-use windows::Win32::System::Variant::{VariantToStringAlloc};
+use windows::Win32::System::Variant::VariantToStringAlloc;
+use windows_core::Interface;
 
 use core::mem::MaybeUninit;
 

@@ -2,8 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::winapi::wmi::init_com;
 use core::mem::ManuallyDrop;
-use windows_core::Interface;
-use windows::core::{VARIANT, BSTR, HRESULT, PWSTR};
+use windows::core::{BSTR, HRESULT, PWSTR, VARIANT};
 use windows::Win32::Foundation::{E_INVALIDARG, E_OUTOFMEMORY, S_FALSE, S_OK, VARIANT_BOOL};
 use windows::Win32::System::Com::{CoCreateInstance, CLSCTX_INPROC_SERVER};
 use windows::Win32::System::TaskScheduler::{
@@ -15,9 +14,8 @@ use windows::Win32::System::TaskScheduler::{
     TASK_ACTION_TYPE, TASK_COMPATIBILITY, TASK_ENUM_HIDDEN, TASK_INSTANCES_POLICY, TASK_LOGON_TYPE,
     TASK_RUNLEVEL_TYPE, TASK_TRIGGER_TYPE2,
 };
-use windows::Win32::System::Variant::{
-    VariantInit
-};
+use windows::Win32::System::Variant::VariantInit;
+use windows_core::Interface;
 
 use std::io::BufReader;
 use std::io::Read;
@@ -83,7 +81,12 @@ pub fn load_tasks() -> Vec<WinTask> {
             };
 
         let _ = task_service
-            .Connect(&VariantInit(), &VariantInit(), &VariantInit(), &VariantInit())
+            .Connect(
+                &VariantInit(),
+                &VariantInit(),
+                &VariantInit(),
+                &VariantInit(),
+            )
             .unwrap();
 
         let mut resp: Vec<WinTask> = vec![];

@@ -90,5 +90,4 @@ pub async fn run() {
 
     let a = find_unattended_install_files::run();
     log::info!("found {} unattended install files", a.len());
-
 }

@@ -5,7 +5,7 @@ use windows::Win32::System::Com::{
     RPC_C_IMP_LEVEL_IMPERSONATE,
 };
 use windows::Win32::System::Rpc::{RPC_C_AUTHN_DEFAULT, RPC_C_AUTHZ_NONE};
-use windows::Win32::System::Variant::{VariantToStringAlloc};
+use windows::Win32::System::Variant::VariantToStringAlloc;
 use windows::Win32::System::Wmi::{
     IWbemClassObject, IWbemLocator, IWbemServices, WbemLocator, WBEM_FLAG_CONNECT_USE_MAX_WAIT,
 };
@@ -15,7 +15,7 @@ pub fn get_field(p: &IWbemClassObject, name_str: &str) -> String {
         let bname =
             BSTR::from_wide(name_str.encode_utf16().collect::<Vec<u16>>().as_slice()).unwrap();
         let name = PCWSTR::from_raw((bname.as_wide()).as_ptr() as *const u16);
-        let mut value: VARIANT  = std::mem::zeroed();
+        let mut value: VARIANT = std::mem::zeroed();
         let _get_resp = p.Get(name, 0, (&mut value) as *mut _ as *mut VARIANT, None, None);
         VariantToStringAlloc(&value).unwrap().to_string().unwrap()
     }
