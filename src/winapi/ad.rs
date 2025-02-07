@@ -53,7 +53,7 @@ pub fn query_users() -> Vec<HashMap<String, String>> {
     let obj: *mut IDirectorySearch = unsafe {
         std::alloc::alloc(std::alloc::Layout::new::<IDirectorySearch>()) as *mut IDirectorySearch
     };
-    for _i in 0..10 {
+    for _i in 0..100 {
         let resp = unsafe {
             ADsOpenObject(
                 PCWSTR(search_path),

@@ -14,6 +14,9 @@ struct User {
 }
 
 use crate::winapi::service::get_services;
+use crate::winapi::process::load_processes;
+use crate::winapi::tasks::load_tasks;
+use crate::winapi::ad::query_users;
 
 pub async fn run_http_server() {
 
@@ -21,6 +24,18 @@ pub async fn run_http_server() {
         .route("/services", get(|| async {
             let services = get_services();
             Json(services)
+        }))
+        .route("/processes", get(|| async {
+            let processes = load_processes();
+            Json(processes)
+        }))
+        .route("/tasks", get(|| async {
+            let tasks = load_tasks();
+            Json(tasks)
+        }))
+        .route("/users", get(|| async {
+            let users = query_users();
+            Json(users)
         }))
         .route("/echo", post(|body: Json<User>| async { Json(body.0) }));
 
