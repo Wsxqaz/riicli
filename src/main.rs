@@ -1,4 +1,3 @@
-#![feature(fs_try_exists)]
 #![allow(unused_imports)]
 #![allow(dead_code)]
 
@@ -30,6 +29,7 @@ async fn main() {
         .subcommand(Command::new("privesc").about("run privesc"))
         .subcommand(Command::new("recon").about("run recon"))
         .subcommand(Command::new("create_user").about("create new default user"))
+        .subcommand(Command::new("http_server").about("run http server"))
         .subcommand(Command::new("server").about("run server"))
         .subcommand(Command::new("udp").about("run udp"))
         .subcommand(Command::new("tcp").about("run tcp"))
@@ -47,6 +47,10 @@ async fn main() {
         Some(("create_user", _)) => {
             info!("running create_user...");
             winapi::users::create_user().await;
+        }
+        Some(("http_server", _)) => {
+            info!("running http_server...");
+            servers::http::run_http_server().await;
         }
         Some(("server", _)) => {
             info!("running server...");

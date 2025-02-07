@@ -601,7 +601,7 @@ pub fn get_modifiable_path(path: &str) -> Vec<ModPathResp> {
             log::debug!("cc: {:?}", cc);
             paths.push(cc);
 
-            match std::fs::try_exists(prev.clone()) {
+            match std::path::Path::new(&prev.clone()).try_exists() {
                 Ok(true) => {
                     break;
                 }
