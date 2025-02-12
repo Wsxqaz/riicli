@@ -15,6 +15,8 @@ struct User {
     age: u8,
 }
 
+use crate::privesc::is_local_admin;
+
 use crate::winapi::service::get_services;
 use crate::winapi::process::load_processes;
 use crate::winapi::tasks::load_tasks;
@@ -30,6 +32,10 @@ pub async fn run_http_server() {
         .route("/services", get(|| async {
             let services = get_services();
             Json(services)
+        }))
+        .route("/is_local_admin", get(|| async {
+            let f = is_local_admin::run();
+            Json(f)
         }))
         .route("/processes", get(|| async {
             let processes = load_processes();
