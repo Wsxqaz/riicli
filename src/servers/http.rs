@@ -6,6 +6,8 @@ use axum::{
 use serde::{Deserialize, Serialize};
 use axum::serve::Serve;
 
+use http::{Method};
+use tower_http::cors::{Any, CorsLayer};
 
 #[derive(Serialize, Deserialize)]
 struct User {
@@ -19,6 +21,10 @@ use crate::winapi::tasks::load_tasks;
 use crate::winapi::ad::query_users;
 
 pub async fn run_http_server() {
+
+    let cors = CorsLayer::new()
+        .allow_methods([Method::GET, Method::POST])
+        .allow_origin(Any);
 
     let app = Router::new()
         .route("/services", get(|| async {
@@ -37,10 +43,11 @@ pub async fn run_http_server() {
             let users = query_users();
             Json(users)
         }))
-        .route("/echo", post(|body: Json<User>| async { Json(body.0) }));
+        .route("/echo", post(|body: Json<User>| async { Json(body.0) }))
+        .layer(cors);
 
 
-    let listener = tokio::net::TcpListener::bind("127.0.0.1:3000").await.unwrap();
+    let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
 
     axum::serve(listener, app).await.unwrap()
 
